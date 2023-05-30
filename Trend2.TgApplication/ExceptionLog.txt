@@ -1,0 +1,4 @@
+WTelegram.WTException: You must connect to Telegram first
+   at WTelegram.Client.SendAsync(IObject msg, Boolean isContent, Rpc rpc)
+   at WTelegram.Client.Invoke[T](IMethod`1 query)
+   at Trend2.Telegram.TgCollector.ChannelProcessingAsync(DataContext db, Channel channel, CancellationToken cancellationToken) in C:\Work\Projects\Trend2.Telegram\Trend2.Telegram\TgCollector.cs:line 143

@@ -1,0 +1,38 @@
+﻿<div class="tg_data_table">
+    <table>
+        <tr>
+            <th id="headerId" style="cursor: pointer" data-field="ID">ID @Html.Raw(Model.SortField == "ID" ? (!Model.SortDirection ? "&#129045;" : "&#129047;") : String.Empty)</th>
+            <th id="headerTitle" style="cursor: pointer" data-field="Title">Заголовок @Html.Raw(Model.SortField == "Title" ? (!Model.SortDirection ? "&#129045;" : "&#129047;") : String.Empty)</th>
+            <th id="headerCreated" style="cursor: pointer" data-field="Created">Создан @Html.Raw(Model.SortField == "Created" ? (!Model.SortDirection ? "&#129045;" : "&#129047;") : String.Empty)</th>
+            <th id="headerUpdated" style="cursor: pointer" data-field="Updated">Обновлён @Html.Raw(Model.SortField == "Updated" ? (!Model.SortDirection ? "&#129045;" : "&#129047;") : String.Empty)</th>
+            <th id="headerSite" style="cursor: pointer" data-field="Site">Наименование @Html.Raw(Model.SortField == "Site" ? (!Model.SortDirection ? "&#129045;" : "&#129047;") : String.Empty)</th>
+            <th id="headerCount" style="cursor: pointer" data-field="Count">Количество @Html.Raw(Model.SortField == "Count" ? (!Model.SortDirection ? "&#129045;" : "&#129047;") : String.Empty)</th>
+        </tr>
+        @{
+            if (Model.Sources?.Count > 0)
+            {
+                foreach (var source in Model.Sources)
+                {
+                    <tr class="@(!source.Enabled ? "not_active_channel" : "")">
+                        <td>@source.Id</td>
+                        <td><a href="~/Home/AddEditSource/@source.Id">@source.Title</a></td>
+                        <td>@source.Created</td>
+                        <td>@source.Updated</td>
+                        <td>@source.Site</td>
+                        <td>@source.Count</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td>Пусто</td>
+                    <td>Пусто</td>
+                    <td>Пусто</td>
+                    <td>Пусто</td>
+                    <td>Пусто</td>
+                </tr>
+            }
+        }
+    </table>
+</div>

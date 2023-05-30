@@ -1,0 +1,134 @@
+﻿.home_main {
+    width: 50%;
+    min-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 12%
+}
+
+.home_buttons {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.home_run, .home_stop, .home_run_disabled, .home_stop_disabled {
+    height: 80px;
+    font-size: 25px;
+    display: inline-block;
+    border: none;
+    text-decoration: none;
+    color: white;
+    transition: .3s;
+    border-radius: 5px;
+}
+
+.home_run {
+    background: #9fc48b;
+    box-shadow: 0 5px 0 #718a64;
+}
+
+.home_run_disabled {
+    background: rgba(0,0,0,0.25);
+    box-shadow: 0 5px 0 #808080;
+}
+
+.home_stop_disabled {
+    background: rgba(0,0,0,0.25);
+    box-shadow: 0 5px 0 #808080;
+}
+
+.home_stop {
+    background: #ed8585;
+    box-shadow: 0 5px 0 #ae6c6c;
+}
+
+.home_run:hover {
+    background: #abcf98
+}
+
+.home_run_disabled:hover, .home_stop_disabled:hover {
+    background: rgba(0,0,0,0.25);
+}
+
+.home_stop:hover {
+    background: #f89999
+}
+
+.home_ref {
+    margin-top: 10%;
+    display: flex;
+    justify-content: center;
+}
+
+.home_ref p {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.home_phone_change {
+    display: flex;
+    margin-top: 10%;
+}
+
+.home_a, .home_a_disabled {
+    margin-left: 24px;
+    font-weight: bold;
+}
+
+.home_a {   
+    cursor: pointer;
+}
+
+.home_a_disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+    color: #666666;
+}
+
+.home_a_disabled:hover {
+    color: black;
+}
+
+.home_upper_panel {
+    font-family: Consolas;
+    background: white;
+}
+
+.home_upper_panel_text {
+    margin-left: 16px;
+}
+
+.home_log {
+    font-family: Consolas;
+    color: white;
+    margin-bottom: 2%;
+    background: #808080;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    max-height: 340px;
+    overflow: auto;
+}
+
+.ver_input_form {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 33%;
+    min-width: 633px; 
+    height: 300px;
+    background-color: #dddddd;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.ver_form_submit {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3%;
+    align-items: baseline;
+}

@@ -1,0 +1,26 @@
+﻿@model Trend2.TgApplication.ViewModels.VerificationViewModel
+@{
+    ViewData["Title"] = $"Верификация по номеру {Model.Number}";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="ver_input_form">
+    <form id="ver_form" action="Verification" method="post">
+        <div class="tg_edit_form_title">
+            <p class="edit_title">Введите код, который пришел на номер @Model.Number</p>
+        </div>
+        <div class="ver_form_input">
+            <input id="tgInput" class="tg_input" name="verificationCode" value="@Model.Code" placeholder="Введите код" />
+            @{
+                if (Model.ErrorMessage != null)
+                {
+                    <p style="color: crimson">@Model.ErrorMessage</p>
+                }                        
+            }
+        </div>
+        <div class="ver_form_submit">
+            <p class="ver_title">Id: @Model.Id</p>
+            <button id="buttonRun" type="submit" class="button_run">Продолжить</button>           
+        </div>
+    </form>
+</div>

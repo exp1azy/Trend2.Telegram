@@ -1,0 +1,36 @@
+﻿@model Trend2.TgApplication.ViewModels.VerificationViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Домашняя страница";
+}
+<div class="home_main">
+    <div class="home_buttons">
+        @{
+            if (Model.IsStarted)
+            {
+                <button id="homeRun" class="home_run_disabled" disabled onclick="startDownload()">Запустить скачивание</button>
+                <button id="homeStop" class="home_stop" onclick="stopDownload()">Остановить скачивание</button>
+            }
+            else
+            {
+                <button id="homeRun" class="home_run" onclick="startDownload()">Запустить скачивание</button>
+                <button id="homeStop" class="home_stop_disabled" disabled onclick="stopDownload()">Остановить скачивание</button>
+            }
+        }
+    </div>
+    <div class="home_ref">
+        <p><a href="~/Source/Index">ПЕРЕЙТИ К СПИСКУ КАНАЛОВ</a></p>
+    </div>
+    @{
+        if (Model.Number != null)
+        {
+            <div class="home_phone_change">
+                <p class="home_number">Скачивание просходит с номера @Model.Number</p>
+                <a id="phoneChange" class=@(Model.IsStarted ? "home_a_disabled" : "home_a") onclick="startDownloadFromAnotherNumber()">Запустить с другого номера</a>               
+            </div>        
+        }
+    }
+    <div class="home_upper_panel"><span class="home_upper_panel_text">Терминал</span></div>
+    <div id="homeLog" class="home_log"></div>
+</div>
+<script src="~/js/console.min.js"></script>

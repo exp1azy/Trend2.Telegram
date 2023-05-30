@@ -1,0 +1,110 @@
+﻿<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <UsingTask
+    TaskName="VersionInfoGenerator"
+    TaskFactory="RoslynCodeTaskFactory"
+    AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll" >
+	<ParameterGroup>
+		<GeneratedFilePath Required="true"/>
+		<GeneratedNamespace Required="false"/>
+		<GeneratedClassName Required="false"/>
+		<GeneratedMemberName Required="false"/>
+	</ParameterGroup>
+    <Task>
+      <Using Namespace="System"/>
+	  <Using Namespace="System.Diagnostics"/>
+	  <Using Namespace="System.Globalization"/>
+      <Using Namespace="System.IO"/>
+      <Code Type="Fragment" Language="cs">
+<![CDATA[
+            string changeset = "";
+            string date = "";
+
+            Log.LogMessage(MessageImportance.High, "VersionInfoGenerator: Получение информации о наборе изменений из Mercurial ...");
+			
+            var p = new Process()
+            {
+                StartInfo = new ProcessStartInfo("hg", "parent")
+                {
+                    CreateNoWindow = true,
+                    RedirectStandardOutput = true,
+					UseShellExecute = false
+                }
+            };
+            p.OutputDataReceived += (sender, e) =>
+            {
+			    try
+				{
+                    if (string.IsNullOrWhiteSpace(e.Data)) return;
+                    if (e.Data.StartsWith("changeset:"))
+                    {
+                        var pos = e.Data.LastIndexOf(':');
+                        if (pos < 0)
+                            pos = 0;
+                        changeset = e.Data.Substring(pos+1).Trim();
+						
+						Log.LogMessage(MessageImportance.High, "VersionInfoGenerator: changeset: " + changeset);
+                    }
+                    else if (e.Data.StartsWith("date:"))
+                    {
+                        var pos = e.Data.IndexOf(':');
+                        if (pos < 0)
+                            pos = 0;
+
+                        date = DateTime.ParseExact(e.Data.Substring(pos+1).Trim(), "ddd MMM dd HH:mm:ss yyyy zzz", CultureInfo.GetCultureInfo("en-US")).ToString("yyyy-MM-dd HH:mm:ss");
+						
+						Log.LogMessage(MessageImportance.High, "VersionInfoGenerator: date: " + date);
+                    }
+				}
+				catch (Exception ex)
+				{
+				    Log.LogError("VersionInfoGenerator: Не удалось прочитать информацию о наборе изменений из Mercurial. Причина: " + ex.Message);
+				}
+            };
+            p.Start();
+            p.BeginOutputReadLine();
+            p.WaitForExit();
+			
+			Log.LogMessage(MessageImportance.High, "VersionInfoGenerator: Генерация файла " + GeneratedFilePath + " ...");
+
+            try
+            {
+                using (var filestream = new FileStream(GeneratedFilePath, FileMode.Create, FileAccess.Write))
+                {
+                    using (var sw = new StreamWriter(filestream))
+                    {
+                        sw.WriteLine(string.Format("namespace {0}", string.IsNullOrWhiteSpace(GeneratedNamespace) ? "Properties" : GeneratedNamespace));
+                        sw.WriteLine("{");
+                        sw.WriteLine("    /// <summary>");
+                        sw.WriteLine("    /// Информация о версии.");
+                        sw.WriteLine("    /// </summary>");
+                        sw.WriteLine("    /// <remarks>Сгенерировано автоматически.");
+                        sw.WriteLine(string.Format("    /// Дата генерации: {0}.</remarks>", DateTime.UtcNow));
+                        sw.WriteLine(string.Format("    public static class {0}", string.IsNullOrWhiteSpace(GeneratedClassName) ? "Version" : GeneratedClassName));
+                        sw.WriteLine("  {");
+
+                        sw.WriteLine("        /// <summary>");
+                        sw.WriteLine("        /// Объект, содержащий информацию о версии продукта.");
+                        sw.WriteLine("        /// </summary>");
+                        sw.WriteLine(string.Format("        public static object {0} => new", string.IsNullOrWhiteSpace(GeneratedMemberName) ? "Info" : GeneratedMemberName));
+                        sw.WriteLine("        {");
+                        sw.WriteLine(string.Format(@"            ChangeSet = ""{0}"",", changeset));
+                        sw.WriteLine(string.Format(@"            Date = ""{0}"",", date));
+                        sw.WriteLine("        };");
+                        sw.WriteLine("  }");
+                        sw.WriteLine("}");
+                        sw.Close();
+                    }
+					filestream.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.LogError("VersionInfoGenerator: Не удалось сгенерировать файл исходного кода с информацией о версии. Причина: " + ex.Message);
+            }
+			
+			Log.LogMessage(MessageImportance.High, "VersionInfoGenerator: Готово.");
+]]>
+      </Code>
+    </Task>
+  </UsingTask>
+</Project>

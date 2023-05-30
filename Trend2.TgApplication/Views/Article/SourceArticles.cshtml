@@ -1,0 +1,86 @@
+﻿@model Trend2.TgApplication.ViewModels.ArticlesViewModel
+@{
+    Layout = "~/Views/Shared/_BackLayout.cshtml";
+    ViewData["Title"] = $"Записи канала {Model.SourceSite}";
+}
+<form action="" id="articleForm"> 
+    <input type="hidden" name="sortField" id="sortField" value="@Model.SortField" />
+    <input type="hidden" name="sortDirection" id="sortDirection" value="@(Model.SortDirection ? "true" : "false")" />
+    <input type="hidden" name="Id" value="@Model.Id" />
+    <div class="article_main">
+        <div class="article_site">
+            <span>Записи канала @Model.SourceSite</span>
+        </div>
+        <div class="article_filters">
+            <input id="pubDate" class="article_input" name="pubDate" value="@Model.PubDate" />
+            <input id="articleHighlightInput" class="article_input" name="searchText" value="@Model.SearchText" placeholder="Поиск" />
+            <button type="submit" class="button_run">Применить</button>
+        </div>
+        <div class="article_headers">
+            <p id="headerId" style="cursor: pointer" data-field="ID">ID @Html.Raw(Model.SortField == "ID" ? (!Model.SortDirection ? "&#129047;" : "&#129045;") : String.Empty)</p>
+            <p>Заголовок</p>
+            <p id="headerPubDate" style="cursor: pointer" data-field="PubDate">Дата @Html.Raw(Model.SortField == "PubDate" ? (!Model.SortDirection ? "&#129047;" : "&#129045;") : String.Empty)</p>
+        </div>
+        @{
+            if (Model.Count == 0)
+            {
+                <div class="article_container">
+                    <div class="article_first">
+                        <p>ID</p>
+                        <p>Заголовок</p>
+                        <p>Дата публикации</p>
+                    </div>
+                    <div hidden class="article_body">
+                        <p>Текст</p>
+                    </div>
+                </div>
+            }
+
+            foreach (var article in Model.Articles)
+            {
+                <div class="article_container">
+                    <div class="article_first">
+                        <p>@article.Id</p>
+                        <p class="article_text for_highlight">@article.Title</p>
+                        <p class ="article_text">@article.PubDate</p>
+                    </div>
+                    <div class="article_body article_hidden">
+                        <p class="for_highlight">@Html.Raw(article.Body)</p>
+                        <div class="article_link">
+                            <p><a href="@article.Link" target="_blank">@article.Link</a></p>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        <div class="article_basement">
+            <div class="tg_res_text">
+                <p>Всего: @Model.Count</p>
+            </div>
+            <div class="tg_next_btn">
+                <div class="tg_selector_under">
+                    <select id="tgListUnder" name="pageSize" class="tg_list_under">
+                        <option selected="true" disabled>Количество записей</option>
+                        <option value="20" selected="@(Model.PageSize == 20)">20</option>
+                        <option value="30" selected="@(Model.PageSize == 30)">30</option>
+                        <option value="50" selected="@(Model.PageSize == 50)">50</option>
+                    </select>
+                </div>
+                <div class="tg_selector_under">
+                    <select id="articlePageSelect" name="page" class="article_page_select">
+                        <option selected="true" disabled>Страницы</option>
+                        @{
+                            var page = Math.Floor((decimal)(Model.Count / Model.PageSize));
+
+                            for (int i = 1; i <= page; i++)
+                            {
+                                <option value="@i" selected="@(Model.Page == i)">@i</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script src="~/js/article.min.js"></script>

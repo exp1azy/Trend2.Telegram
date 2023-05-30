@@ -1,0 +1,40 @@
+﻿@model Trend2.TgApplication.ViewModels.EditChannelViewModel
+@{
+    ViewData["Title"] = Model.Id == 0 ? "Создание канала" : "Изменение канала";
+    Layout = "~/Views/Shared/_BackLayout.cshtml";
+}
+
+<div class="input_form">
+    <form id="edit_form" method="post">
+        <input type="hidden" name="Id" value="@Model.Id" />
+        <div class="tg_edit_form_title">
+            <p class="edit_title">@(Model.Id == 0 ? "Создание канала" : "Изменение канала")</p>
+        </div>
+        <div class="tg_edit_form_inputs">
+            <div class="tg_input">
+                @Html.TextBoxFor(m => m.Title, new { @class = "tg_input", placeholder = "Заголовок" })
+                @Html.ValidationMessageFor(model => model.Title, null, new { style = "color:crimson" })
+            </div>
+            <div class="tg_input">
+                @Html.TextBoxFor(m => m.Site, new { @class = "tg_input", placeholder = "Наименование" })
+                @Html.ValidationMessageFor(model => model.Site, null, new { style = "color:crimson" })
+            </div>
+        </div>
+        <div class="tg_edit_form_submit">
+            <label>@Html.CheckBoxFor(m => Model.Enabled, new { @class = "tg_enable_check" })Активный?</label> 
+            @{
+                if (Model.Id > 0)
+                {
+                    <div class="tg_edit_form_btns">
+                        <button type="button" onclick="if(confirm('Удалить канал с заголовком @Model.Title?')) location.href='@Url.Action("DeleteSource", "Source", new { id = Model.Id })'" class="edit_buttons">Удалить</button>
+                        <button type="submit" class="edit_buttons">Изменить</button>
+                    </div>
+                }
+                else
+                {
+                    <button type="submit" class="edit_button">Добавить</button>
+                }
+            }         
+        </div>
+    </form>
+</div>

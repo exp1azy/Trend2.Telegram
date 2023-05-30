@@ -1,0 +1,87 @@
+﻿@model Trend2.TgApplication.ViewModels.SortedSourceViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Телеграм коллектор";
+}
+<form action="" id="indexForm">
+    <input type="hidden" name="sortField" id="sortField" value="@Model.SortField" />
+    <input type="hidden" name="sortDirection" id="sortDirection" value="@(Model.SortDirection ? "true" : "false")" />
+    <div class="tg_data">
+        <div class="tg_params">
+            <div class="tg_input">
+                <input name="title" placeholder="Заголовок" value="@Model.Title">
+            </div>
+            <div class="tg_input">
+                <input name="site" placeholder="Наименование" value="@Model.Site">
+            </div>
+            <div class="tg_selector">
+                <select name="enableFilter" class="tg_list">
+                    <option value="0" selected="@(Model.EnableFilter == 0)">Все</option>
+                    <option value="1" selected="@(Model.EnableFilter == 1)">Только активные</option>
+                    <option value="2" selected="@(Model.EnableFilter == 2)">Только неактивные</option>
+                </select>
+            </div>
+            <div class="tg_btns">
+                <button type="submit" class="button_run">Применить</button>
+            </div>
+        </div>
+        <div class="tg_data_table">
+            <table>
+                <tr>
+                    <th id="headerId" style="cursor: pointer" data-field="ID">ID @Html.Raw(Model.SortField == "ID" ? (!Model.SortDirection ? "&#129045;" : "&#129047;") : String.Empty)</th>
+                    <th id="headerTitle" style="cursor: pointer" data-field="Title">Заголовок @Html.Raw(Model.SortField == "Title" ? (!Model.SortDirection ? "&#129045;" : "&#129047;") : String.Empty)</th>
+                    <th id="headerCreated" style="cursor: pointer" data-field="Created">Создан @Html.Raw(Model.SortField == "Created" ? (!Model.SortDirection ? "&#129045;" : "&#129047;") : String.Empty)</th>
+                    <th id="headerUpdated" style="cursor: pointer" data-field="Updated">Обновлён @Html.Raw(Model.SortField == "Updated" ? (!Model.SortDirection ? "&#129045;" : "&#129047;") : String.Empty)</th>
+                    <th id="headerSite" style="cursor: pointer" data-field="Site">Наименование @Html.Raw(Model.SortField == "Site" ? (!Model.SortDirection ? "&#129045;" : "&#129047;") : String.Empty)</th>
+                    <th id="headerCount" style="cursor: pointer" data-field="Count">Количество @Html.Raw(Model.SortField == "Count" ? (!Model.SortDirection ? "&#129045;" : "&#129047;") : String.Empty)</th>
+                </tr>
+                @{
+                    if (Model.Sources?.Count > 0)
+                    {
+                        foreach (var source in Model.Sources)
+                        {
+                            <tr class="@(!source.Enabled ? "not_active_channel" : "")">
+                                <td>@source.Id</td>
+                                <td><a href="~/Source/AddEditSource/@source.Id">@source.Title</a></td>
+                                <td>@source.Created</td>
+                                <td>@source.Updated</td>
+                                <td>@source.Site</td>
+                                <td><a href="~/Article/SourceArticles/@source.Id">@source.Count</a></td>
+                            </tr>
+                        }
+                    }            
+                }
+            </table>
+        </div>
+        <div class="tg_res">
+            <div class="tg_res_text">
+                <p>Всего: @Model.Count</p>
+            </div>
+            <div class="tg_next_btn">
+                <div class="tg_selector_under">
+                    <select name="pageSize" class="tg_list_under">
+                        <option selected="true" disabled>Количество записей</option>
+                        <option value="20" selected="@(Model.PageSize == 20)">20</option>
+                        <option value="30" selected="@(Model.PageSize == 30)">30</option>
+                        <option value="50" selected="@(Model.PageSize == 50)">50</option>
+                    </select>
+                </div>
+                <div class="tg_selector_under">
+                    <select name="page" class="tg_list_under">
+                        <option selected="true" disabled>Страницы</option>
+                        @{
+                            var page = Math.Floor((decimal)(Model.Count / Model.PageSize));
+
+                            for (int i = 1; i <= page; i++)
+                            {
+                                <option value="@i", selected="@(Model.Page == i)">@i</option>
+                            }
+                        }                    
+                    </select>
+                </div>
+                <button type="submit" class="button_next"><a class="next_page" href="~/Source/AddEditSource">Cоздать</a></button>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript" src="~/js/index.min.js"/>

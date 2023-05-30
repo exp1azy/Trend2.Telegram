@@ -1,0 +1,50 @@
+[
+  {
+    "outputFileName": "wwwroot/js/console.min.js",
+    "inputFiles": [
+      "wwwroot/js/console.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/index.min.js",
+    "inputFiles": [
+      "wwwroot/js/index.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/article.min.min.js",
+    "inputFiles": [
+      "wwwroot/js/article.min.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/article.min.js",
+    "inputFiles": [
+      "wwwroot/js/article.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/article_style.min.css",
+    "inputFiles": [
+      "wwwroot/css/article_style.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/edit_form_style.min.css",
+    "inputFiles": [
+      "wwwroot/css/edit_form_style.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/home_style.min.css",
+    "inputFiles": [
+      "wwwroot/css/home_style.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/index_style.min.css",
+    "inputFiles": [
+      "wwwroot/css/index_style.css"
+    ]
+  }
+]
